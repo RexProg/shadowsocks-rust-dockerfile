@@ -1,0 +1,14 @@
+{
+    "server": "Your server ip",
+    "server_port": 443,
+    "local_address": "0.0.0.0",
+    "local_port": 1080,
+    "password": "ZA2722",
+    "timeout": 300,
+    "method": "rc4-md5",
+    "fast_open": true,
+    "workers": 1,
+    "prefer_ipv6": false,
+    "plugin": "obfs-local",
+    "plugin_opts": "obfs=tls"
+  }
