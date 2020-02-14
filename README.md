@@ -1,5 +1,5 @@
 # Shadowsocks Rust Dockerfile
-[Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust) + simple-obfs Dockerfile and Docker Compose
+[Shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust) + [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin) Dockerfile and Docker Compose
 
 # Usage
 - to run shadowsocks server, review server.json then
