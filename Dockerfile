@@ -1,46 +1,25 @@
-FROM alpine:3.6
+FROM alpine:latest
 
 LABEL maintainer="RexProg <RexProg.Programmer@gmail.com>"
 
-ENV SS_DOWNLOAD_URL https://github.com/shadowsocks/shadowsocks-rust/releases/download/v1.7.2/shadowsocks-v1.7.2-stable.x86_64-unknown-linux-musl.tar.xz
-ENV OBFS_DOWNLOAD_URL https://github.com/shadowsocks/simple-obfs.git
+ENV SS_REPOSITORY_URL https://github.com/shadowsocks/shadowsocks-rust.git
+ENV V2RAY_DOWNLOAD_URL https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.2.0/v2ray-plugin-linux-amd64-v1.2.0.tar.gz
 
 RUN apk upgrade --update \
-    && apk add bash tzdata libsodium \
-    && apk add --virtual .build-deps \
-        autoconf \
-        automake \
-        asciidoc \
-        xmlto \
-        build-base \
-        curl \
-        c-ares-dev \
-        libev-dev \
-        libtool \
-        linux-headers \
-        udns-dev \
-        libsodium-dev \
-        mbedtls-dev \
-        pcre-dev \
-        udns-dev \
-        tar \
-        xz \
-        git \
-    && curl -sSLO ${SS_DOWNLOAD_URL} \
-    && tar -xf ${SS_DOWNLOAD_URL##*/} -C /usr/bin \
-    && git clone --recursive ${OBFS_DOWNLOAD_URL} \
-    && (cd simple-obfs \
-    && ./autogen.sh && ./configure \
-    && make && make install) \
-    && runDeps="$( \
-        scanelf --needed --nobanner /usr/bin/ss* /usr/local/bin/obfs-* \
-            | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-            | xargs -r apk info --installed \
-           | sort -u \
-        )" \
-    && apk add --virtual .run-deps $runDeps \
-    && apk del .build-deps \
-    && rm -rf ${SS_DOWNLOAD_URL##*/} \
-        simple-obfs \
-        /var/cache/apk/*
-CMD [ "ssserver", "-c","/server.json","-u"]
+	&& apk update \
+	&& set -ex \
+	&& apk add --no-cache \
+		cargo \
+		git \
+		pkgconfig \
+		openssl-dev \
+		libsodium-dev \
+		wget \
+	&& wget ${V2RAY_DOWNLOAD_URL} \
+	&& tar -xvf v2ray-plugin-linux-amd64-v1.2.0.tar.gz \
+	&& mv v2ray-plugin_linux_amd64 /usr/bin/v2ray-plugin \
+	&& git clone --recursive ${SS_REPOSITORY_URL} \
+	&& cd /shadowsocks-rust \
+	&& SODIUM_USE_PKG_CONFIG=1 cargo build --release
+
+CMD [ "/shadowsocks-rust/target/release/ssserver", "-c","/server.json"]
