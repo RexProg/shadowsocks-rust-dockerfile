@@ -19,4 +19,3 @@ docker-compose up -d dns
 - Port: 443
 - Method: rc4-md5
 - Password: ZA2722
-- Plugin: simple-obfs(tls)
