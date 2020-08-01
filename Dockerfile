@@ -3,7 +3,7 @@ FROM alpine:latest
 LABEL maintainer="RexProg <RexProg.Programmer@gmail.com>"
 
 ENV SS_REPOSITORY_URL https://github.com/shadowsocks/shadowsocks-rust.git
-ENV V2RAY_DOWNLOAD_URL https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.0/v2ray-plugin-linux-amd64-v1.3.0.tar.gz
+ENV V2RAY_DOWNLOAD_URL https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.1/v2ray-plugin-linux-amd64-v1.3.1.tar.gz
 
 RUN apk upgrade --update \
 	&& apk update \
@@ -16,7 +16,7 @@ RUN apk upgrade --update \
 		libsodium-dev \
 		wget \
 	&& wget ${V2RAY_DOWNLOAD_URL} \
-	&& tar -xvf v2ray-plugin-linux-amd64-v1.3.0.tar.gz \
+	&& tar -xvf v2ray-plugin-linux-amd64-v1.3.1.tar.gz \
 	&& mv v2ray-plugin_linux_amd64 /usr/bin/v2ray-plugin \
 	&& git clone --recursive ${SS_REPOSITORY_URL} \
 	&& cd /shadowsocks-rust \
