@@ -4,15 +4,7 @@
 # Usage
 - to run shadowsocks server, review server.json then
 ```
-docker-compose up -d server
-```
-- to run shadowsocks client, review client.json then
-```
-docker-compose up -d local
-```
-- to run shadowsocks dns local server, review dns.json then
-```
-docker-compose up -d dns
+docker-compose up -d
 ```
 
 # Default Values

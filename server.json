@@ -1,7 +1,7 @@
 {
   "server": "0.0.0.0",
   "server_port": 443,
-  "password": "Heh50066",
+  "password": "ZA2722",
   "timeout": 5000,
   "mode":"tcp_and_udp",
   "method": "chacha20-ietf-poly1305",
