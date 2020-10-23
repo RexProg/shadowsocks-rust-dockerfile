@@ -9,5 +9,5 @@ docker-compose up -d
 
 # Default Values
 - Port: 443
-- Method: rc4-md5
+- Method: chacha20-ietf-poly1305
 - Password: ZA2722

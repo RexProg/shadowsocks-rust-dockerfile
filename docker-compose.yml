@@ -4,8 +4,8 @@ services:
   shadowsocks-server:
     build: .
     ports:
-      - 443:443
-      - 443:443/udp
+      - 107:443
+      - 107:443/udp
     volumes:
       - ./server.json:/server.json
     command: [ "ssserver", "-c","/server.json","-u"]
