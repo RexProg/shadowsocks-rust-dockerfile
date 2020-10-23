@@ -1,35 +1,13 @@
-version: "2"
+version: "3.8"
+
 services:
-  server:
-    image: rexprog/shadowsocks-rust
+  shadowsocks-server:
+    build: .
     ports:
       - 443:443
       - 443:443/udp
     volumes:
       - ./server.json:/server.json
     command: [ "ssserver", "-c","/server.json","-u"]
-    build: .
     restart: always
     container_name: ssserver
-
-  local:
-    image: rexprog/shadowsocks-rust
-    ports:
-      - 1080:1080
-      - 1080:1080/udp
-    volumes:
-      - ./client.json:/client.json
-    command: [ "sslocal", "-c","/client.json","-u"]
-    build: .
-    container_name: sslocal
-
-  dns:
-    image: rexprog/shadowsocks-rust
-    ports:
-      - 1081:1080
-      - 1081:1080/udp
-    volumes:
-      - ./dns.json:/dns.json
-    command: [ "ssdns", "-c","/dns.json"]
-    build: .
-    container_name: ssdns
