@@ -14,6 +14,8 @@ RUN apt update \
 	&& git clone ${SHADOWSOCKS_RUST_GIT_URL} \
 	&& cd shadowsocks-rust \
 	&& cargo build --release \
-	&& make install TARGET=release
+	&& make install TARGET=release \
+        && cargo clean \
+        && rm -rf /usr/local/rustup/toolchains/*
 
 CMD [ "$CARGO_HOME/bin/ssserver", "-c","/server.json"]
