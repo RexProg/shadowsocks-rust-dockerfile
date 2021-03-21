@@ -3,11 +3,11 @@ version: "3.8"
 services:
   shadowsocks-server:
     build: .
+    image: rexprog/shadowsocks-rust:latest
     ports:
       - 107:443
       - 107:443/udp
     volumes:
       - ./server.json:/server.json
-    command: [ "ssserver", "-c","/server.json","-u"]
     restart: always
     container_name: ssserver

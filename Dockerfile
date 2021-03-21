@@ -1,4 +1,4 @@
-FROM rust:latest
+FROM rust:latest AS build-env
 
 LABEL maintainer="RexProg <RexProg.Programmer@gmail.com>"
 
@@ -8,14 +8,18 @@ ENV SHADOWSOCKS_RUST_GIT_URL https://github.com/shadowsocks/shadowsocks-rust.git
 RUN apt update \
 	&& apt upgrade -y \
 	&& apt install git \
+	&& git clone ${SHADOWSOCKS_RUST_GIT_URL} \
+	&& export RUSTFLAGS="-C target-cpu=native" \
+	&& cd shadowsocks-rust \
+	&& rustup override set nightly \
+	&& cargo build --release \
 	&& wget ${V2RAY_DOWNLOAD_URL} \
 	&& tar -xvf v2ray-plugin-linux-amd64-v1.3.1.tar.gz \
-	&& mv v2ray-plugin_linux_amd64 /usr/bin/v2ray-plugin \
-	&& git clone ${SHADOWSOCKS_RUST_GIT_URL} \
-	&& cd shadowsocks-rust \
-	&& cargo build --release \
-	&& make install TARGET=release \
-        && cargo clean \
-        && rm -rf /usr/local/rustup/toolchains/*
+	&& mv v2ray-plugin_linux_amd64 ./target/release/v2ray-plugin
 
-CMD [ "$CARGO_HOME/bin/ssserver", "-c","/server.json"]
+FROM ubuntu:latest
+
+COPY --from=build-env /shadowsocks-rust/target/release /usr/bin
+
+CMD [ "ssserver", "-c", "/server.json"]
+
